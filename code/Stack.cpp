@@ -83,3 +83,12 @@ namespace crumbs {
     }
 
 }
+
+#ifdef CRUMBS_SINGLE_THREADED
+    crumbs::Stack& crumbs::call_stack ()
+    {
+        static crumbs::Stack
+            __call_stack__;
+        return (__call_stack__);
+    }
+#endif

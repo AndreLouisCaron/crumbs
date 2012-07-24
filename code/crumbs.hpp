@@ -38,16 +38,6 @@ namespace crumbs {}
 #include "Frame.hpp"
 #include "Stack.hpp"
 
-// Default implementation.
-#ifdef CRUMBS_SINGLE_THREADED
-    crumbs::Stack& crumbs::call_stack ()
-    {
-        static crumbs::Stack
-            __call_stack__;
-        return (__call_stack__);
-    }
-#endif
-
 /*!
  * @def CRUMBS_ENABLED
  * @brief Enables or disables stack trace management.
