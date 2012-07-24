@@ -145,7 +145,7 @@ Compiling
 
       nmake help
 
-   Open the ``help/html/index.html`` file (relative to the source code root)
+   Open the ``help/html/index.html`` file (relative to the build root)
    to consult the docmentation.
 
 
