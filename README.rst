@@ -165,14 +165,16 @@ CMake project as a Git submodule.
 
 2. Add ``crumbs`` to the list of build targets in your root ``CMakeLists.txt``.
 
-   # Locate crumbs and add its target(s).
-   set(crumbs_DIR
-     ${CMAKE_SOURCE_DIR}/libs/crumbs
-   )
-   find_package(crumbs)
+   ::
 
-   # Resolve <crumbs.hpp> anywhere your project.
-   include_directories(${crumbs_include_dir})
+      # Locate crumbs and add its target(s).
+      set(crumbs_DIR
+        ${CMAKE_SOURCE_DIR}/libs/crumbs
+      )
+      find_package(crumbs)
+
+      # Resolve <crumbs.hpp> anywhere your project.
+      include_directories(${crumbs_include_dir})
 
 3. Instruct other targets to link against ``crumbs``.
 
