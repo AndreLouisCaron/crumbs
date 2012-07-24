@@ -178,19 +178,19 @@ CMake project as a Git submodule.
 
 3. Instruct other targets to link against ``crumbs``.
 
-  ::
+   ::
 
-     # Make sure crumbs is built before dependent targets.
-     add_dependencies(my-target
-       crumbs
-       # ...
-     )
+      # Make sure crumbs is built before dependent targets.
+      add_dependencies(my-target
+        crumbs
+        # ...
+      )
 
-     # Have dependent targets link against crumbs.
-     target_link_libraries(my-target
-       crumbs
-       # ...
-     )
+      # Have dependent targets link against crumbs.
+      target_link_libraries(my-target
+        crumbs
+        # ...
+      )
 
 
 License
