@@ -43,6 +43,8 @@
 // Introspection is not portable :-(
 #ifdef _MSC_VER
 #   define CRUMBS_CURRENT_FUNCTION() __FUNCSIG__
+#elif defined(__GNUC__)
+#   define CRUMBS_CURRENT_FUNCTION() __PRETTY_FUNCTION__
 #else
 #   error "CRUMBS_CURRENT_FUNCTION() is not defined for current compiler."
 #endif
