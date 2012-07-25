@@ -78,7 +78,6 @@ namespace crumbs {}
             (__FILE__, __LINE__, CRUMBS_CURRENT_FUNCTION()); \
         const crumbs::Frame __frame__(__entry__);
 #else
-#   error "AAARRRRGH!"
 #   define leave_bread_crumbs()
 #endif
 
