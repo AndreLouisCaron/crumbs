@@ -37,7 +37,6 @@
 #   ifndef CRUMBS_SINGLE_THREADED
 #      define CRUMBS_SINGLE_THREADED 1
 #   endif
-#else
 #endif
 
 // Introspection is not portable :-(
