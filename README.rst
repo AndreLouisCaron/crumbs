@@ -52,8 +52,8 @@ Usage
           CustomException ()
           {
               std::cerr
-                  << "Error raised at:"   << std::endl
-                  << crumbs::call_stack() << std::endl;
+                  << "Error raised at:" << std::endl
+                  << crumbs::call_stack << std::endl;
               // ...
           }
       };
@@ -69,7 +69,7 @@ Usage
           crumbs::Stack myCallStack;
       public:
           CustomException ()
-              : myCallStack(crumbs::call_stack())
+              : myCallStack(crumbs::current_frame())
           {
               // ...
           }
@@ -96,13 +96,13 @@ Usage
            -DCRUMBS_ROOT_PATH="${CMAKE_SOURCE_DIR}"
          )
 
-   3. Implement the ``crumbs::call_stack()`` function for multi-threaded
+   3. Implement the ``crumbs::current_frame()`` functions for multi-threaded
       programs.  If using the crumbs library from multiple threads, you need to
-      disable the default ``crumbs::call_stack()`` implementation by setting
-      the ``CRUMBS_SINGLE_THREADED`` to 0 and implement the
-      ``crumbs::call_stack()`` function to return a ``crumbs::Stack`` instance
-      located in thead-local storege.  Refer to your threading library's
-      documentation if necessary.
+      disable the default ``crumbs::current_frame()`` implementation by setting
+      the ``CRUMBS_SINGLE_THREADED`` to 0.  Then, implement the
+      ``crumbs::current_frame()`` functions to store the current stack frame in
+      thead-local storege.  Refer to your threading library's documentation if
+      necessary.
 
 
 Compiling
