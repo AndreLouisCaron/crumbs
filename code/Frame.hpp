@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "__configure__.hpp"
+#include <cstddef>
 
 namespace crumbs {
 
@@ -38,6 +39,7 @@ namespace crumbs {
         /* data. */
     private:
         const Entry& myEntry;
+        const Frame* const myParent;
 
         /* construction. */
     public:
@@ -47,7 +49,35 @@ namespace crumbs {
         /* methods. */
     public:
         const Entry& entry () const;
+
+        const Frame * parent () const;
     };
+
+    /*!
+     * @brief Access the current call frame.
+     *
+     * If @c CRUMBS_SINGLE_THREADED is 1 (the default), crumbs provides its own
+     * definition for this function.  In multi-threaded programs, this
+     * definition is unsafe and you should provide your own theaad-local call
+     * stack object.
+     *
+     * @see CRUMBS_SINGLE_THREADED
+     * @see current_frame(const Frame*)
+     */
+    const Frame * current_frame ();
+
+    /*!
+     * @brief Change the current call frame.
+     *
+     * If @c CRUMBS_SINGLE_THREADED is 1 (the default), crumbs provides its own
+     * definition for this function.  In multi-threaded programs, this
+     * definition is unsafe and you should provide your own theaad-local call
+     * stack object.
+     *
+     * @see CRUMBS_SINGLE_THREADED
+     * @see current_frame()
+     */
+    void current_frame (const Frame * frame);
 
 }
 

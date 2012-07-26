@@ -39,6 +39,30 @@
 #   endif
 #endif
 
+/*!
+ * @def CRUMBS_STACK_DEPTH
+ * @brief Maximum stack depth for pre-allocated call stacks.
+ *
+ * This constant is used to avoid dynamic memory allocation in @c Stack in
+ * order to guarantee safe use in exception classes.  See the Error and
+ * Exception Handling in the Boost documentation for details on why dynamic
+ * memory allocation in exception classes can cause @c std::terminate() to be
+ * called.
+ *
+ * If not defined, it defaults to 8.
+ *
+ * @warning Do not try to set this value using a @c #define preprocessor
+ *  directive in source files: this could easily result in incompatible
+ *  definitions across compilation units.  Instead, prefer to set this macro
+ *  using a compiler option.  See your compiler documentation for details.
+ *
+ * @see http://www.boost.org/community/error_handling.html
+ */
+
+#ifndef CRUMBS_STACK_DEPTH
+#   define CRUMBS_STACK_DEPTH 8
+#endif
+
 // Introspection is not portable :-(
 #ifdef _MSC_VER
 #   define CRUMBS_CURRENT_FUNCTION() __FUNCSIG__

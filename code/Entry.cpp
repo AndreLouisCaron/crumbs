@@ -52,6 +52,13 @@ namespace {
 
 namespace crumbs {
 
+    Entry::Entry ()
+        : myFile("")
+        , myLine(0)
+        , myFunction("")
+    {
+    }
+
     Entry::Entry (const char * file, int line, const char * function)
         : myFile(::advance(file))
         , myLine(line)

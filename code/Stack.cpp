@@ -31,45 +31,43 @@
 
 namespace crumbs {
 
-    Stack::Stack (std::size_t depth)
-        : myFrames()
+    Stack::Stack (const Frame * frame)
+        : mySize(0)
     {
-        myFrames.reserve(depth);
+        const std::size_t n = CRUMBS_STACK_DEPTH;
+        for (; (mySize < n) && (frame != 0); frame = frame->parent()) {
+            myData[mySize++] = frame->entry();
+        }
+    }
+
+    Stack::Stack (const Stack& other)
+        : mySize(0)
+    {
+        iterator current = other.begin();
+        const iterator end = other.end();
+        for (; (current != end); ++current) {
+            myData[mySize++] = *current;
+        }
     }
 
     std::size_t Stack::size () const
     {
-        return (myFrames.size());
+        return (mySize);
     }
 
     bool Stack::empty () const
     {
-        return (myFrames.empty());
-    }
-
-    void Stack::push (const Entry& entry)
-    {
-        myFrames.push_back(&entry);
-    }
-
-    const Entry& Stack::top () const
-    {
-        return (*myFrames.back());
-    }
-
-    void Stack::pop ()
-    {
-        myFrames.pop_back();
+        return (mySize == 0);
     }
 
     Stack::iterator Stack::begin () const
     {
-        return (myFrames.rbegin());
+        return (myData);
     }
 
     Stack::iterator Stack::end () const
     {
-        return (myFrames.rend());
+        return (myData + mySize);
     }
 
     std::ostream& operator<< (std::ostream& stream, const Stack& stack)
@@ -77,18 +75,28 @@ namespace crumbs {
         Stack::iterator current = stack.begin();
         const Stack::iterator end = stack.end();
         for (; (current != end); ++current) {
-            stream << **current << std::endl;
+            stream << *current << std::endl;
         }
         return (stream);
     }
 
-}
-
-#ifdef CRUMBS_SINGLE_THREADED
-    crumbs::Stack& crumbs::call_stack ()
+    std::ostream& call_stack (std::ostream& stream)
     {
-        static crumbs::Stack
-            __call_stack__;
-        return (__call_stack__);
+        const Frame * frame = current_frame();
+        for (; (frame != 0); frame = frame->parent()) {
+            stream << frame->entry() << std::endl;
+        }
+        return (stream);
     }
-#endif
+
+    std::vector<Entry> full_call_stack ()
+    {
+        std::vector<Entry> frames;
+        const Frame * frame = current_frame();
+        for (; (frame != 0); frame = frame->parent()) {
+            frames.push_back(frame->entry());
+        }
+        return (frames);
+    }
+
+}

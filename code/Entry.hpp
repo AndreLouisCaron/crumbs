@@ -42,6 +42,7 @@ namespace crumbs {
 
         /* construction. */
     public:
+        Entry ();
         Entry (const char * file, int line, const char * function);
 
         /* methods. */

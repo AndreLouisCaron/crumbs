@@ -28,53 +28,70 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "__configure__.hpp"
+#include "Frame.hpp"
+#include "Entry.hpp"
 #include <iosfwd>
 #include <vector>
 
 namespace crumbs {
 
-    class Entry;
-    class Frame;
-
     class Stack
     {
         /* nested types. */
     public:
-        typedef std::vector<const Entry*>::const_reverse_iterator iterator;
+        typedef const Entry * iterator;
 
         /* data. */
     private:
-        std::vector<const Entry*> myFrames;
+        std::size_t mySize;
+        Entry myData[CRUMBS_STACK_DEPTH];
 
         /* construction. */
     public:
-        Stack (std::size_t depth=32);
+        /*!
+         * @brief Get a (partial) copy of a call stack.
+         * @param frame Stack frame from which to start walking the stack.
+         *  Defaults to the current frame.
+         *
+         * This function copies at most @c CRUMBS_STACK_DEPTH stack frames.
+         * For a full stack frame listing, use @c full_call_frame().
+         *
+         * @see current_frame()
+         * @see full_call_stack()
+         */
+        Stack (const Frame * frame=current_frame());
+
+        Stack (const Stack& other);
 
         /* methods. */
     public:
         std::size_t size () const;
         bool empty () const;
-        void push (const Entry& entry);
-        const Entry& top () const;
-        void pop ();
 
         iterator begin () const;
         iterator end () const;
     };
 
+    /*!
+     * @brief Print a call stack.
+     *
+     * @see call_stack(std::ostream&)
+     */
     std::ostream& operator<< (std::ostream& stream, const Stack& stack);
 
     /*!
-     * @brief Access the current call stack.
+     * @brief Print the (entire) current call stack.
      *
-     * If @c CRUMBS_SINGLE_THREADED is 1 (the default), crumbs provides its own
-     * definition for this function.  In multi-threaded programs, this
-     * definition is unsafe and you should provide your own theaad-local call
-     * stack object.
-     *
-     * @see CRUMBS_SINGLE_THREADED
+     * @see operator<<(std::ostream&,const Stack&)
      */
-    crumbs::Stack& call_stack ();
+    std::ostream& call_stack (std::ostream& stream);
+
+    /*!
+     * @brief Get a copy of the entire current call stack.
+     *
+     * @see Stack::Stack()
+     */
+    std::vector<Entry> full_call_stack ();
 
 }
 

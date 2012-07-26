@@ -25,9 +25,30 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <crumbs.hpp>
+#include <exception>
 #include <iostream>
 
 namespace {
+
+    class CustomException :
+        public std::exception
+    {
+        /* data. */
+    private:
+        crumbs::Stack myCallStack;
+
+        /* construction. */
+    public:
+        CustomException ()
+            : myCallStack(crumbs::current_frame())
+        {}
+
+        /* methods. */
+    public:
+        const crumbs::Stack& call_stack () const {
+            return (myCallStack);
+        }
+    };
 
     void do_something ()
     {
@@ -35,8 +56,11 @@ namespace {
 
         // Print the current call stack.
         std::cerr
-            << crumbs::call_stack()
+            << crumbs::call_stack
             << std::endl;
+
+        // Make sure the caller gets a chance to print it too!
+        throw (CustomException());
     }
 
 }
@@ -47,6 +71,13 @@ try
     leave_bread_crumbs();
 
     ::do_something();
+}
+catch (const ::CustomException& error)
+{
+    std::cerr
+        << "Uncaught error at:" << std::endl
+        << error.call_stack()   << std::endl;
+    return (EXIT_FAILURE);
 }
 catch (const std::exception& error)
 {

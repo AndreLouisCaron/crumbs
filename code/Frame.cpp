@@ -28,22 +28,46 @@
 #include "Entry.hpp"
 #include "Stack.hpp"
 
+#ifdef CRUMBS_SINGLE_THREADED
+namespace {
+    const crumbs::Frame * current_frame = 0;
+}
+#endif
+
 namespace crumbs {
 
     Frame::Frame (const Entry& entry)
         : myEntry(entry)
+        , myParent(current_frame())
     {
-        call_stack().push(myEntry);
+        current_frame(this);
     }
 
     Frame::~Frame ()
     {
-        call_stack().pop();
+        current_frame(current_frame()->parent());
     }
 
     const Entry& Frame::entry () const
     {
         return (myEntry);
     }
+
+    const Frame * Frame::parent () const
+    {
+        return (myParent);
+    }
+
+#ifdef CRUMBS_SINGLE_THREADED
+    const Frame * current_frame ()
+    {
+        return (::current_frame);
+    }
+
+    void current_frame (const Frame * frame)
+    {
+        ::current_frame = frame;
+    }
+#endif
 
 }
