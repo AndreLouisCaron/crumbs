@@ -77,6 +77,8 @@ namespace crumbs {}
         static const crumbs::Entry __entry__\
             (__FILE__, __LINE__, CRUMBS_CURRENT_FUNCTION()); \
         const crumbs::Frame __frame__(__entry__);
+#   define show_bread_crumbs()\
+        std::cerr << __entry__ << std::endl;
 #else
 #   define leave_bread_crumbs()
 #endif
